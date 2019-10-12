@@ -234,6 +234,20 @@ portFORCE_INLINE static void vPortSetBASEPRI( uint32_t ulNewMaskValue )
 }
 /*-----------------------------------------------------------*/
 
+portFORCE_INLINE static BaseType_t xPortIsCriticalSection( void )
+{
+uint32_t ulReturn;
+
+	__asm volatile
+	(
+		"	mrs %0, basepri	"
+		:"=r" ( ulReturn )
+	);
+
+	return (ulReturn > 0) ? pdTRUE : pdFALSE;
+}
+/*-----------------------------------------------------------*/
+
 #define portMEMORY_BARRIER() __asm volatile( "" ::: "memory" )
 
 #ifdef __cplusplus
